@@ -4,10 +4,69 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>French Quote Randomizer</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <h1 class="text-2xl font-semibold">
+        French Quote <span class="text-purple-500">Randomizer</span>
+      </h1>
+      <div class="container p-4 m-4">
+        <div class="settings flex flex-row justify-around mx-auto w-full">
+          <div class="number-of-quotes flex flex-col m-4">
+            <label for="numberOfQuotes ">
+              <p class="text-sm text-gray-300 font-medium">Quotes</p>
+            </label>
+            <div class="quotes-range">
+              <input
+                name="numberOfQuotes"
+                class="range"
+                type="range"
+                min="1"
+                max="5"
+                value="1"
+                step="1"
+              />
+              <output id="rangevalue"></output>
+            </div>
+          </div>
+          <div class="quotes-collection flex flex-col m-4">
+            <label for="collections">
+              <p class="text-sm text-gray-300 font-medium">Collection</p>
+            </label>
+            <select name="collections" class="collections-select">
+              <option value="classic">Classic</option>
+              <option value="lorem">Lorem</option>
+            </select>
+          </div>
+        </div>
+        <div class="quotes-container"></div>
+        <button
+          class="randomize-button flex flex-row items-center randomize-button bg-purple-400 text-white rounded-md px-4 py-2 m-12 transition duration-500 ease select-none hover:bg-purple-500 focus:outline-none active:ring-4 active:ring-purple-500 active:ring-opacity-50"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            class="w-4 h-4 mr-2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="{2}"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Randomize
+        </button>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

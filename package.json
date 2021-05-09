@@ -8,5 +8,11 @@
   },
   "devDependencies": {
     "vite": "^2.2.3"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.14",
+    "sass": "^1.32.12",
+    "tailwindcss": "^2.1.2"
   }
 }
