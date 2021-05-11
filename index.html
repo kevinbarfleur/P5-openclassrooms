@@ -14,14 +14,29 @@
     <div class="background">
       <div
         id="app"
-        class="max-w-md mx-auto items-center bg-white p-4 mb-12 rounded-md shadow-md"
+        class="
+          max-w-md
+          mx-auto
+          items-center
+          bg-white
+          p-4
+          mb-6
+          rounded-md
+          shadow-md
+        "
       >
         <h1 class="text-2xl font-semibold">
           French Quote <span class="text-purple-500">Randomizer</span>
         </h1>
         <div class="container p-4 m-4">
           <div
-            class="settings flex flex-row flex-wrap justify-around mx-auto w-full"
+            class="
+              settings
+              flex flex-row flex-wrap
+              justify-around
+              mx-auto
+              w-full
+            "
           >
             <div class="number-of-quotes flex flex-col m-4">
               <label for="numberOfQuotes ">
@@ -44,16 +59,36 @@
               <label for="collections">
                 <p class="text-sm text-gray-300 font-medium">Collection</p>
               </label>
-              <select name="collections" class="collections-select">
-                <option value="classic">Classic</option>
-                <option value="lorem">Lorem</option>
-              </select>
+              <div class="collections-toggle">
+                <div class="item collections-classic active">Classic</div>
+                <div class="item collections-lorem">Lorem</div>
+              </div>
             </div>
           </div>
           <div class="quotes-container"></div>
           <div class="actions-container flex flex-row flex-wrap mt-6">
             <button
-              class="randomize-button m-2 flex flex-row items-center randomize-button bg-purple-400 text-white rounded-md px-4 py-2 m-12 transition duration-500 ease select-none hover:bg-purple-500 focus:outline-none active:ring-4 active:ring-purple-500 active:ring-opacity-50"
+              class="
+                randomize-button
+                m-2
+                flex flex-row
+                items-center
+                randomize-button
+                bg-purple-400
+                text-white
+                rounded-md
+                px-4
+                py-2
+                m-12
+                transition
+                duration-500
+                ease
+                select-none
+                border-solid border-2 border-purple-400
+                hover:bg-purple-500
+                focus:outline-none
+                active:ring-4 active:ring-purple-500 active:ring-opacity-50
+              "
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -72,7 +107,29 @@
               Randomize
             </button>
             <button
-              class="validate-button m-2 flex flex-row items-center randomize-button bg-purple-400 text-white rounded-md px-4 py-2 m-12 transition duration-500 ease select-none hover:bg-purple-500 focus:outline-none active:ring-4 active:ring-purple-500 active:ring-opacity-50"
+              class="
+                validate-button
+                m-2
+                flex flex-row
+                items-center
+                randomize-button
+                bg-white
+                text-white
+                rounded-md
+                px-4
+                py-2
+                m-12
+                transition
+                duration-500
+                ease
+                select-none
+                text-purple-500
+                border-solid border-2 border-purple-200
+                hover:bg-purple-500
+                hover:text-white
+                focus:outline-none
+                active:ring-4 active:ring-purple-500 active:ring-opacity-50
+              "
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -93,6 +150,61 @@
           </div>
         </div>
       </div>
+      <div class="save-separator mt-12 mb-4 max-w-md mx-auto items-center">
+        <div class="label flex flex-row items-center justify-between">
+          <div class="font-semibold text-lg text-gray-800 mr-2">
+            Saved quotes
+          </div>
+          <div class="line"></div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-purple-400"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+          </svg>
+        </div>
+        <input
+          class="
+            filter-input
+            w-full
+            mt-2
+            pt-2
+            pb-2
+            pl-4
+            border-solid border-1 border-light-200
+            rounded-md
+            focus:outline-none
+            focus:ring-4 focus:ring-purple-400 focus:ring-opacity-50
+          "
+          type="text"
+          placeholder="Search saved quote..."
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="
+            reset-input
+            h-5
+            w-5
+            text-gray-300
+            hover:text-gray-400
+            cursor-pointer
+            transition-all
+            duration-300
+            ease-in-out
+          "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+      <div class="save mb-24 max-w-md mx-auto items-center"></div>
     </div>
     <script
       src="https://code.jquery.com/jquery-3.6.0.slim.min.js"

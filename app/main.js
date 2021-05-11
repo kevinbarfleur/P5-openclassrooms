@@ -1,6 +1,12 @@
 import "../styles/styles.scss";
 import { dictionary, dictionaryAlt } from "./dictionary.js";
-import { getTemplate, toClipboard } from "./utils.js";
+import {
+  getTemplate,
+  toClipboard,
+  getSavedQuotes,
+  saveQuote,
+  unsaveQuote,
+} from "./utils.js";
 
 const generateSentence = (dictionary) => {
   let blocks = [];
@@ -51,8 +57,15 @@ const fillQuote = (container, quote) => {
   container.innerHTML += quoteTemplate(currentQuote);
 };
 
-const getSource = (select) => {
-  return select.value === "classic" ? dictionary : dictionaryAlt;
+const fillSavedQuotes = (container, savedQuote) => {
+  container.innerHTML = "";
+  for (let quote of savedQuote) {
+    container.innerHTML += getTemplate("saved-quote", quote);
+  }
+};
+
+const getSource = (value) => {
+  return value === "classic" ? dictionary : dictionaryAlt;
 };
 
 const getQuotes = (element, numberOfQuotes, source) => {
@@ -62,17 +75,82 @@ const getQuotes = (element, numberOfQuotes, source) => {
   }
 };
 
+const filterQuote = (filterValue, quotes) => {
+  return quotes.filter((quote) =>
+    quote.toUpperCase().includes(filterValue.toUpperCase())
+  );
+};
+
 $(function () {
   const quotesContainer = document.querySelector(".quotes-container");
+  const savedContainer = document.querySelector(".save");
   const randomizeButton = document.querySelector(".randomize-button");
   const validateButton = document.querySelector(".validate-button");
   const rangeValue = document.querySelector("#rangevalue");
   const rangeInput = document.querySelector(".range");
-  const source = document.querySelector(".collections-select");
+  // const source = document.querySelector(".collections-select");
+  const resetInput = document.querySelector(".reset-input");
+  const filterInput = document.querySelector(".filter-input");
+  const classicCollec = document.querySelector(".collections-classic");
+  const loremCollec = document.querySelector(".collections-lorem");
+  let source = "classic";
+  let unsave = document.querySelectorAll("#remove-from-saved");
   let numberOfQuotes = 1;
+  let filteredquotes = [];
+
+  let savedQuotes = getSavedQuotes();
+  fillSavedQuotes(savedContainer, savedQuotes);
+
+  let removeFromSaved = (savedContainer) => {
+    unsave = document.querySelectorAll("#remove-from-saved");
+    unsave.forEach((quote, index) => {
+      quote.addEventListener("click", () => {
+        console.log("Remove triggered");
+        unsaveQuote(index);
+        let updatedSavedQuotes = getSavedQuotes();
+        fillSavedQuotes(savedContainer, updatedSavedQuotes);
+        removeFromSaved(savedContainer);
+      });
+    });
+  };
+  removeFromSaved(savedContainer);
 
   rangeInput.value = numberOfQuotes;
   rangeValue.value = numberOfQuotes;
+
+  classicCollec.addEventListener("click", () => {
+    if (classicCollec.classList.contains("active")) return;
+    source = "classic";
+    loremCollec.classList.remove("active");
+    classicCollec.classList.add("active");
+    getQuotes(quotesContainer, numberOfQuotes, source);
+  });
+
+  loremCollec.addEventListener("click", () => {
+    if (loremCollec.classList.contains("active")) return;
+    source = "lorem";
+    classicCollec.classList.remove("active");
+    loremCollec.classList.add("active");
+    getQuotes(quotesContainer, numberOfQuotes, source);
+  });
+
+  filterInput.addEventListener("input", () => {
+    if (filterInput.value || filterInput.value.length) {
+      resetInput.style.opacity = 1;
+    } else {
+      resetInput.style.opacity = 0;
+    }
+
+    filteredquotes = filterQuote(filterInput.value, savedQuotes);
+    fillSavedQuotes(savedContainer, filteredquotes);
+  });
+
+  resetInput.addEventListener("click", () => {
+    filterInput.value = "";
+    resetInput.style.opacity = 0;
+    filteredquotes = filterQuote(filterInput.value, savedQuotes);
+    fillSavedQuotes(savedContainer, filteredquotes);
+  });
 
   rangeInput.addEventListener("input", () => {
     randomizeButton.style.display = "flex";
@@ -81,18 +159,15 @@ $(function () {
     getQuotes(quotesContainer, numberOfQuotes, source);
   });
 
-  source.addEventListener("input", () => {
-    randomizeButton.style.display = "flex";
-    getQuotes(quotesContainer, numberOfQuotes, source);
-  });
-
   validateButton.addEventListener("click", () => {
     randomizeButton.style.display = "none";
+    const actions = document.querySelectorAll(".actions");
     const clipboards = document.querySelectorAll(".clipboard");
+    const save = document.querySelectorAll(".save");
     const quote = document.querySelectorAll(".quote");
     const quoteContent = document.querySelectorAll(".quote-container");
 
-    for (let el of clipboards) {
+    for (let el of actions) {
       el.classList.add("visible");
     }
     for (let el of quote) {
@@ -108,11 +183,17 @@ $(function () {
         toClipboard(quoteContent[index].innerHTML);
       });
     });
-  });
 
-  // const savedQuotes = { ...JSON.parse(localStorage.getItem("savedQuotes")) };
-  // localStorage.setItem("savedQuotes", savedQuotes);
-  // console.log(localStorage.savedQuotes);
+    save.forEach((quote, index) => {
+      quote.addEventListener("click", () => {
+        console.log("Save triggered");
+        quote.innerHTML = getTemplate("save-done");
+        saveQuote(quoteContent[index].innerHTML);
+        savedQuotes = getSavedQuotes();
+        fillSavedQuotes(savedContainer, savedQuotes);
+      });
+    });
+  });
 
   getQuotes(quotesContainer, numberOfQuotes, source);
 
