@@ -54,6 +54,8 @@ body {
 
 .save-separator {
   position: relative;
+  opacity: 0;
+  transition: 0.4s;
   .reset-input {
     z-index: 9;
     position: absolute;
@@ -68,6 +70,7 @@ body {
   .label {
     .line {
       border-bottom: solid 1px #8b5cf6;
+      opacity: 0.6;
       min-width: 65%;
       height: 1px;
     }

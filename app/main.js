@@ -86,9 +86,9 @@ $(function () {
   const savedContainer = document.querySelector(".save");
   const randomizeButton = document.querySelector(".randomize-button");
   const validateButton = document.querySelector(".validate-button");
+  const saveContainer = document.querySelector(".save-separator");
   const rangeValue = document.querySelector("#rangevalue");
   const rangeInput = document.querySelector(".range");
-  // const source = document.querySelector(".collections-select");
   const resetInput = document.querySelector(".reset-input");
   const filterInput = document.querySelector(".filter-input");
   const classicCollec = document.querySelector(".collections-classic");
@@ -101,15 +101,26 @@ $(function () {
   let savedQuotes = getSavedQuotes();
   fillSavedQuotes(savedContainer, savedQuotes);
 
+  if (savedQuotes && savedQuotes.length <= 0) {
+    saveContainer.style.opacity = 0;
+  } else {
+    saveContainer.style.opacity = 1;
+  }
+
   let removeFromSaved = (savedContainer) => {
     unsave = document.querySelectorAll("#remove-from-saved");
     unsave.forEach((quote, index) => {
       quote.addEventListener("click", () => {
-        console.log("Remove triggered");
         unsaveQuote(index);
-        let updatedSavedQuotes = getSavedQuotes();
-        fillSavedQuotes(savedContainer, updatedSavedQuotes);
+        savedQuotes = getSavedQuotes();
+        fillSavedQuotes(savedContainer, savedQuotes);
         removeFromSaved(savedContainer);
+
+        if (savedQuotes && savedQuotes.length <= 0) {
+          saveContainer.style.opacity = 0;
+        } else {
+          saveContainer.style.opacity = 1;
+        }
       });
     });
   };
@@ -124,6 +135,7 @@ $(function () {
     loremCollec.classList.remove("active");
     classicCollec.classList.add("active");
     getQuotes(quotesContainer, numberOfQuotes, source);
+    randomizeButton.style.display = "flex";
   });
 
   loremCollec.addEventListener("click", () => {
@@ -132,6 +144,7 @@ $(function () {
     classicCollec.classList.remove("active");
     loremCollec.classList.add("active");
     getQuotes(quotesContainer, numberOfQuotes, source);
+    randomizeButton.style.display = "flex";
   });
 
   filterInput.addEventListener("input", () => {
@@ -186,11 +199,20 @@ $(function () {
 
     save.forEach((quote, index) => {
       quote.addEventListener("click", () => {
-        console.log("Save triggered");
-        quote.innerHTML = getTemplate("save-done");
-        saveQuote(quoteContent[index].innerHTML);
-        savedQuotes = getSavedQuotes();
-        fillSavedQuotes(savedContainer, savedQuotes);
+        if (quoteContent[index]) {
+          quote.innerHTML = getTemplate("save-done");
+          saveQuote(quoteContent[index].innerHTML);
+          savedQuotes = getSavedQuotes();
+          fillSavedQuotes(savedContainer, savedQuotes);
+
+          removeFromSaved(savedContainer);
+
+          if (savedQuotes && savedQuotes.length <= 0) {
+            saveContainer.style.opacity = 0;
+          } else {
+            saveContainer.style.opacity = 1;
+          }
+        }
       });
     });
   });
