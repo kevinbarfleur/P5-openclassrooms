@@ -23,7 +23,7 @@ export const getTemplate = (template, prop) => {
     case "saved-quote":
       return `
           <div class="savedQuote p-4 mb-4 rounded-md shadow-md bg-white">
-            <svg xmlns="http://www.w3.org/2000/svg" id="remove-from-saved" class="unsave h-5 w-5 text-purple-400 text-sm hover:text-red-400 cursor-pointer transition-all duration-300 ease-in-out" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="unsave remove-from-saved h-5 w-5 text-purple-400 text-sm hover:text-red-400 cursor-pointer transition-all duration-300 ease-in-out" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
             </svg>
             <span class="quote-container">${prop}</span>
@@ -63,11 +63,16 @@ export const getTemplate = (template, prop) => {
 };
 
 export const toClipboard = (quote) => {
-  navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
-    if (result.state == "granted" || result.state == "prompt") {
-      navigator.clipboard.writeText(quote);
-    }
-  });
+  try {
+    navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
+      if (result.state == "granted" || result.state == "prompt") {
+        navigator.clipboard.writeText(quote);
+      }
+    });
+  } catch (error) {
+    console.warning(error);
+    alert("Sorry. This feature is probably not available on your browser.");
+  }
 };
 
 export const getSavedQuotes = () => {
@@ -77,8 +82,13 @@ export const getSavedQuotes = () => {
   return JSON.parse(localStorage.getItem("savedQuotes"));
 };
 
+// TODO verifier qu'elle n'existe pas déjà
 export const saveQuote = (quote) => {
   let savedQuotes = getSavedQuotes();
+  if (savedQuotes.includes(quote)) {
+    alert("lol");
+    return;
+  }
   savedQuotes.push(quote);
   localStorage.setItem("savedQuotes", JSON.stringify(savedQuotes));
 };

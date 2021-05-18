@@ -16,7 +16,7 @@ body {
 #app {
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 90px;
 
   .container {
     margin: auto;
@@ -53,20 +53,21 @@ body {
 }
 
 .save-separator {
-  position: relative;
   opacity: 0;
   transition: 0.4s;
-  .reset-input {
-    z-index: 9;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    transform: translateY(-50%) translateX(-50%);
-    opacity: 0;
-    transition: 0.4s;
+  .filter-container {
+    position: relative;
+    .reset-input {
+      z-index: 9;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      transform: translateY(-50%) translateX(-50%);
+      opacity: 0;
+      transition: 0.4s;
+    }
   }
-  .filter-saved {
-  }
+
   .label {
     .line {
       border-bottom: solid 1px #8b5cf6;
@@ -109,11 +110,13 @@ body {
     transition: 0.4s;
     font-weight: 500;
     font-size: 0.9em;
+    color: rgb(175, 174, 174);
 
     &:hover {
       cursor: pointer;
       background-color: rgba(139, 92, 246, 0.1);
       transition: 0.4s;
+      color: rgb(124, 124, 124);
     }
 
     &.active {

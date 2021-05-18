@@ -1,5 +1,7 @@
 import "../styles/styles.scss";
 import { dictionary, dictionaryAlt } from "./dictionary.js";
+
+// Useful functions that do not directly influence the logic of the program
 import {
   getTemplate,
   toClipboard,
@@ -8,6 +10,7 @@ import {
   unsaveQuote,
 } from "./utils.js";
 
+// Generate the quote from the selected dictionary
 const generateSentence = (dictionary) => {
   let blocks = [];
 
@@ -16,9 +19,14 @@ const generateSentence = (dictionary) => {
     blocks.push(selected);
   });
 
+  /*
+    Returns the generated quote properly formatted (spaces, aprostrophe, etc...)
+    using the formatBloks() function just below.
+  */
   return formatBlocks(blocks);
 };
 
+// Format quote
 const formatBlocks = (blocks) => {
   const vowel = "aeiouyhéè";
   if (blocks[3].charAt(blocks[3].length - 1) === "#") {
@@ -43,6 +51,7 @@ const formatBlocks = (blocks) => {
   return blocks.join(" ");
 };
 
+// All html templates are generated with this function "getTemplate()" available in utils.js
 const quoteTemplate = (quote) => {
   return getTemplate("quote", quote);
 };
@@ -68,6 +77,10 @@ const getSource = (value) => {
   return value === "classic" ? dictionary : dictionaryAlt;
 };
 
+/*
+  Returns all the requested quotes taking into account the number and the source.
+  Injects them into the html
+*/
 const getQuotes = (element, numberOfQuotes, source) => {
   element.innerHTML = "";
   for (let i = 0; i < numberOfQuotes; i++) {
@@ -75,12 +88,17 @@ const getQuotes = (element, numberOfQuotes, source) => {
   }
 };
 
+// Filter saved quotes
 const filterQuote = (filterValue, quotes) => {
   return quotes.filter((quote) =>
     quote.toUpperCase().includes(filterValue.toUpperCase())
   );
 };
 
+/*
+  Initialization of the script. The use of jQuery allows to wait for
+  the DOM and the object document to be properly loaded and accessible.
+*/
 $(function () {
   const quotesContainer = document.querySelector(".quotes-container");
   const savedContainer = document.querySelector(".save");
@@ -94,23 +112,27 @@ $(function () {
   const classicCollec = document.querySelector(".collections-classic");
   const loremCollec = document.querySelector(".collections-lorem");
   let source = "classic";
-  let unsave = document.querySelectorAll("#remove-from-saved");
+  let unsave = document.querySelectorAll(".remove-from-saved");
   let numberOfQuotes = 1;
   let filteredquotes = [];
 
+  // First display of saved quotes
   let savedQuotes = getSavedQuotes();
   fillSavedQuotes(savedContainer, savedQuotes);
 
+  // displays or hides the saved quotes container
   if (savedQuotes && savedQuotes.length <= 0) {
     saveContainer.style.opacity = 0;
   } else {
     saveContainer.style.opacity = 1;
   }
 
+  // Manage listener events for deleting and re-displaying saved quotes
   let removeFromSaved = (savedContainer) => {
-    unsave = document.querySelectorAll("#remove-from-saved");
+    unsave = document.querySelectorAll(".remove-from-saved");
     unsave.forEach((quote, index) => {
       quote.addEventListener("click", () => {
+        // This function is available in utils.js
         unsaveQuote(index);
         savedQuotes = getSavedQuotes();
         fillSavedQuotes(savedContainer, savedQuotes);
@@ -129,6 +151,7 @@ $(function () {
   rangeInput.value = numberOfQuotes;
   rangeValue.value = numberOfQuotes;
 
+  // Select classic collection
   classicCollec.addEventListener("click", () => {
     if (classicCollec.classList.contains("active")) return;
     source = "classic";
@@ -138,6 +161,7 @@ $(function () {
     randomizeButton.style.display = "flex";
   });
 
+  // Select lorem collection
   loremCollec.addEventListener("click", () => {
     if (loremCollec.classList.contains("active")) return;
     source = "lorem";
@@ -156,6 +180,7 @@ $(function () {
 
     filteredquotes = filterQuote(filterInput.value, savedQuotes);
     fillSavedQuotes(savedContainer, filteredquotes);
+    removeFromSaved(savedContainer);
   });
 
   resetInput.addEventListener("click", () => {
@@ -163,6 +188,7 @@ $(function () {
     resetInput.style.opacity = 0;
     filteredquotes = filterQuote(filterInput.value, savedQuotes);
     fillSavedQuotes(savedContainer, filteredquotes);
+    removeFromSaved(savedContainer);
   });
 
   rangeInput.addEventListener("input", () => {
@@ -172,6 +198,11 @@ $(function () {
     getQuotes(quotesContainer, numberOfQuotes, source);
   });
 
+  /*
+    A set of actions are triggered by pressing the validate button :
+    - Set actions buttons visible
+    - Initialize events listeners of all these actions
+  */
   validateButton.addEventListener("click", () => {
     randomizeButton.style.display = "none";
     const actions = document.querySelectorAll(".actions");
@@ -180,6 +211,7 @@ $(function () {
     const quote = document.querySelectorAll(".quote");
     const quoteContent = document.querySelectorAll(".quote-container");
 
+    // Set actions buttons visible
     for (let el of actions) {
       el.classList.add("visible");
     }
@@ -187,6 +219,7 @@ $(function () {
       el.classList.add("isDone");
     }
 
+    // Initialize events listeners of clipboards
     clipboards.forEach((quote, index) => {
       quote.addEventListener("click", () => {
         clipboards[index].innerHTML = getTemplate("copy-done");
@@ -197,8 +230,10 @@ $(function () {
       });
     });
 
+    // Initialize events listeners of save quote
     save.forEach((quote, index) => {
       quote.addEventListener("click", () => {
+        console.log(quote);
         if (quoteContent[index]) {
           quote.innerHTML = getTemplate("save-done");
           saveQuote(quoteContent[index].innerHTML);
@@ -217,8 +252,10 @@ $(function () {
     });
   });
 
+  // First display of quotes
   getQuotes(quotesContainer, numberOfQuotes, source);
 
+  // Event listener of randomize button
   randomizeButton.addEventListener("click", () => {
     getQuotes(quotesContainer, numberOfQuotes, source);
   });

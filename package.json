@@ -6,10 +6,8 @@
     "build": "vite build",
     "serve": "vite preview"
   },
-  "devDependencies": {
-    "vite": "^2.2.3"
-  },
   "dependencies": {
+    "vite": "^2.2.3",
     "autoprefixer": "^10.2.5",
     "build": "^0.1.4",
     "postcss": "^8.2.14",
