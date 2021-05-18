@@ -136,7 +136,10 @@ $(function () {
         unsaveQuote(index);
         savedQuotes = getSavedQuotes();
         fillSavedQuotes(savedContainer, savedQuotes);
-        removeFromSaved(savedContainer);
+
+        setTimeout(() => {
+          removeFromSaved(savedContainer);
+        }, 200);
 
         if (savedQuotes && savedQuotes.length <= 0) {
           saveContainer.style.opacity = 0;
@@ -233,14 +236,15 @@ $(function () {
     // Initialize events listeners of save quote
     save.forEach((quote, index) => {
       quote.addEventListener("click", () => {
-        console.log(quote);
         if (quoteContent[index]) {
           quote.innerHTML = getTemplate("save-done");
           saveQuote(quoteContent[index].innerHTML);
           savedQuotes = getSavedQuotes();
           fillSavedQuotes(savedContainer, savedQuotes);
 
-          removeFromSaved(savedContainer);
+          setTimeout(() => {
+            removeFromSaved(savedContainer);
+          }, 200);
 
           if (savedQuotes && savedQuotes.length <= 0) {
             saveContainer.style.opacity = 0;
