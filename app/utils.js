@@ -82,11 +82,10 @@ export const getSavedQuotes = () => {
   return JSON.parse(localStorage.getItem("savedQuotes"));
 };
 
-// TODO verifier qu'elle n'existe pas déjà
 export const saveQuote = (quote) => {
   let savedQuotes = getSavedQuotes();
   if (savedQuotes.includes(quote)) {
-    alert("lol");
+    alert("This quote is already present in the saved quotes.");
     return;
   }
   savedQuotes.push(quote);
