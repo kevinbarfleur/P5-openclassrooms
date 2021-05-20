@@ -104,6 +104,7 @@ $(function () {
   const savedContainer = document.querySelector(".save");
   const randomizeButton = document.querySelector(".randomize-button");
   const validateButton = document.querySelector(".validate-button");
+  const settingsContainer = document.querySelector(".settings");
   const saveContainer = document.querySelector(".save-separator");
   const rangeValue = document.querySelector("#rangevalue");
   const rangeInput = document.querySelector(".range");
@@ -207,7 +208,11 @@ $(function () {
     - Initialize events listeners of all these actions
   */
   validateButton.addEventListener("click", () => {
+    // Hide actions after validate
+    settingsContainer.style.display = "none";
     randomizeButton.style.display = "none";
+    validateButton.style.display = "none";
+
     const actions = document.querySelectorAll(".actions");
     const clipboards = document.querySelectorAll(".clipboard");
     const save = document.querySelectorAll(".save");

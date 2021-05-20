@@ -70,8 +70,9 @@ export const toClipboard = (quote) => {
       }
     });
   } catch (error) {
-    console.warning(error);
-    alert("Sorry. This feature is probably not available on your browser.");
+    console.warning(
+      "Sorry. This feature is probably not available on your browser."
+    );
   }
 };
 
@@ -85,7 +86,7 @@ export const getSavedQuotes = () => {
 export const saveQuote = (quote) => {
   let savedQuotes = getSavedQuotes();
   if (savedQuotes.includes(quote)) {
-    alert("This quote is already present in the saved quotes.");
+    console.log("This quote is already present in the saved quotes.");
     return;
   }
   savedQuotes.push(quote);
